@@ -6,20 +6,18 @@ Feature: Quitar articulo de la venta
 
     Background:
         Given una venta en proceso con la línea de venta:
-            | Código | Talle | Color | Cantidad | Importe |
-            | 123    | 32    | negro | 3        | $7000   |
-        And el total de la venta es $8470
+            | Código | Talle | Color | Precio U.| Cantidad | Subtotal  |
+            | 123    | 32    | negro | $7000    | 3        | $21000     |
+        And el total de la venta es $21000
 
 
     Scenario: Borrar una línea de venta reduciendo a cero su cantidad
         When modifico la cantidad de la línea de venta a 0
         Then la línea de venta se borra
-        And el subtotal de la venta es $0
         And el total de la venta es $0
 
 
     Scenario: Borrar una línea de venta seleccionando la opción de cruz o equis
         When selecciono la opción de borrar sobre la línea de venta
         Then la línea de venta se borra
-        And el subtotal de la venta es $0
         And el total de la venta es $0
