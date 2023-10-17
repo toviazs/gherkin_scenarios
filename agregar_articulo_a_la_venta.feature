@@ -4,7 +4,7 @@ Feature: Agregar articulo a la venta
     Quiero agregar articulos a la venta
     Para reflejar la seleccion del cliente y conocer el total
 
-
+    # Prueba 0
     Scenario: Listar combinaciones de talle y stock e información de articulo existente
         Given una venta en proceso
         And existe un articulo con el codigo 123, con la informacion:
@@ -25,6 +25,7 @@ Feature: Agregar articulo a la venta
             | 36    | blanco | 4     |
 
 
+    # Prueba 1
     Scenario: Exito al agregar el articulo a la venta
         Given una venta en proceso
         And existe un artículo con el código 123
@@ -33,12 +34,11 @@ Feature: Agregar articulo a la venta
             | Talle | Color |
             | 32    | negro |
         Then Se agrega la combinación seleccionada como linea de venta
-            | Codigo | Talle | Color | Cantidad | Importe |
-            | 123    | 32    | negro | 2        | $14000  |
-        And el subtotal de la venta es $14000
-        And el total de la venta es $16940
+            | Codigo | Talle | Color | Precio U. | Cantidad | Subtotal |
+            | 123    | 32    | negro | $7000     | 2        | $14000   |
+        And el total de la venta es $14000
 
-
+    # Prueba 2
     Scenario: Error al listar articulo inexistente
         Given una venta en proceso
         And existe un articulo con codigo 100
@@ -46,36 +46,35 @@ Feature: Agregar articulo a la venta
         Then se muestra el mensaje "No existe un articulo con el codigo 321"
 
 
+    # Prueba 3
     Scenario: Agregar un artículo a la venta que ya tiene un artículo
         Given una venta en proceso con la combinación:
-            | Codigo | Talle | Color | Cantidad | Importe |
-            | 123    | 32    | negro | 3        | $21000  |
-        And el subtotal de la venta es $21000
-        And el total de la venta es $25410
+            | Codigo | Talle | Color | Precio U. | Cantidad | Subtotal |
+            | 123    | 32    | negro | $7000     | 3        | $21000   |
+        And el total de la venta es $21000
         When creo la linea de venta
-            | Codigo | Talle | Color  | Cantidad | Importe |
-            | 456    | 40    | blanco | 2        | $20000  |
+            | Codigo | Talle | Color  | Precio U. | Cantidad | Subtotal |
+            | 456    | 40    | blanco | $10000    | 2        | $20000   |
         Then la combinación seleccionada se agrega como linea de venta:
-            | Codigo | Talle | Color  | Cantidad | Importe |
-            | 123    | 32    | negro  | 3        | $21000  |
-            | 456    | 40    | blanco | 2        | $20000  |
-        And al subtotal de la venta es $41000
-        And el total de la venta es $49610
+            | Codigo | Talle | Color  | Precio U. | Cantidad | Subtotal |
+            | 123    | 32    | negro  | $7000     | 3        | $21000   |
+            | 456    | 40    | blanco | $10000    | 2        | $20000   |
+        And el total de la venta es $41000
 
-
+    # Prueba 4
     Scenario: Exito al modificar la cantidad de un articulo en la venta
         Given una venta en proceso con la linea de venta:
-            | Codigo | Talle | Color | Cantidad | Importe |
-            | 123    | 32    | negro | 4        | $28000  |
-        And el total de la venta es $33880
-        When modifico la cantidad de la linea de venta a 2
-        Then la linea de venta se modifica:
-            | Codigo | Talle | Color | Cantidad | Importe |
-            | 123    | 32    | negro | 2        | $14000  |
-        And el subtotal de la venta es $14000
-        And el total de la venta es $16940
+            | Codigo | Talle | Color | Precio U. | Cantidad | Subtotal |
+            | 123    | 32    | negro | $7000     | 1        | $7000    |
+        And la combinación tiene un stock de 5
+        When modifico la cantidad de la linea de venta a 3
+        Then la la linea de venta se modifica:
+            | Codigo | Talle | Color | Precio U. | Cantidad | Subtotal |
+            | 123    | 32    | negro | $7000     | 3        | $21000   |
+        And el total de la venta es $21000
 
 
+    # Prueba 5
     Scenario: Cantidad de stock insuficiente al agregar artículo:
         Given una venta en proceso
         And se listan las combinaciones:
@@ -83,13 +82,3 @@ Feature: Agregar articulo a la venta
             | 32    | negro | 3     |
         When selecciono 4 unidades de esa combinación
         Then se muestra el mensaje "Stock insuficiente para la cantidad indicada"
-
-
-
-
-
-
-
-
-
-
